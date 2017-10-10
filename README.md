@@ -2,6 +2,22 @@
 ReactJS + Nodejs + React Router V4 user authentication, based on the code from tutorial: https://vladimirponomarev.com/blog/authentication-in-react-apps-jwt, and the 
 routing/redirect idea comes from: https://reacttraining.com/react-router/web/example/auth-workflow
 
+Comment 10/10/2017, 3:18pm:
+
+Tested multi language(Eng/Chinese) setup, basically the idea is to store the current langugage setting with localStorage, and render header/main
+accordingly, same idea as how the user token is stored.
+
+Spent a long time figuring out how to render the Main under the Header: with the app structure from yesterday, the problem is, when the 
+langugage switch button, which is in the Header, is clicked, only the header will update the states and render in another langugage, and 
+because there's no state update in Main, it can rely only on the change of its props, which are passed from the start page, and won't happen
+until the Main page is refreshed/reached again. Eventually the solution turns out to be quite simple: replace the "button" with "Link", and 
+apply the onClick event to the Link, which will both update the Header states, and redirect to the Main page again, which will cause the Main
+page to be refreshed and rendered accordingly.
+
+However the above solution feels a bit dodgy/lazy, since most of the multilingual websites usually handle different languages with different URLs,
+I think i'm doing it this way because of the influence of conditional rendering in ReactJS. May change to using different URLs such as /EN, /CH in 
+the future if necessary.  
+
 Comment 09/10/2017, 9:00pm:
 
 The original tutorial is not working with the latest versions of ReactJS, React-Router-Rom, webpack, and Material-UI. The version here

@@ -1,7 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import Auth from '../modules/Auth';
-
+import LanguageSetting from '../modules/LanguageSetting';
+import {Redirect} from 'react-router-dom';
 
 
 
@@ -11,17 +12,27 @@ class Header extends React.Component {
     super(props);
 
     // set the initial component state
-    // this.state = {
-    //   redirect: false,
-    //   errors: {},
-    //   user: {
-    //     email: '',
-    //     name: '',
-    //     password: ''
-    //   }
-    // };
+    this.state = {
+      LangBtnText: '中文版',
+      SiteText: 'WebSite Name',
+      loginText: 'Log In',
+      signupText: 'Sign up',
+      userWelcomeText: 'Hello ',
+      redirect: false,
+      // websiteTitle: 'React Application',
+      // websit
+      // redirect: false,
+      // errors: {},
+      // user: {
+      //   email: '',
+      //   name: '',
+      //   password: ''
+      // }
+    };
 
     this.onLogOutClicked = this.onLogOutClicked.bind(this);
+    this.onLanguageSettingClicked = this.onLanguageSettingClicked.bind(this);
+    // LanguageSetting.setEng();
   }    
 
   onLogOutClicked()
@@ -30,14 +41,53 @@ class Header extends React.Component {
     
   }
 
+  onLanguageSettingClicked()
+  {
+    console.log(localStorage.getItem('currentLanguage'));
+    if(localStorage.getItem('currentLanguage') == 'Eng')
+    {
+      localStorage.setItem('currentLanguage', '中文')
+      //  LanguageSetting.setChi();
+       this.setState({LangBtnText:'English'});
+
+       this.setState({SiteText:'网站名称'});
+
+       this.setState({loginText:'登录'});
+       this.setState({singupText:'注册'});
+       this.setState({userWelcomeText:'你好 '});
+       this.setState({redirect: true});
+    }
+    else
+    {
+      localStorage.setItem('currentLanguage', 'Eng');
+       this.setState({LangBtnText:'中文版'});
+
+       this.setState({SiteText:'WebSite Name'});
+
+       this.setState({loginText:'Log in'});
+       this.setState({singupText:'Sign up'});
+       this.setState({userWelcomeText:'Hello '});
+       this.setState({redirect: true});
+
+    }
+
+  }
+
+
   render() {
     return (
       // <div>
       //   signup
       // </div>
+
+      
+
     <div className="top-bar">
+
+      
+
         <div className="top-bar-left">
-                <Link to="/">React App</Link>   
+                <Link to="/">{this.state.SiteText}</Link>   
         </div>
 
 
@@ -45,7 +95,9 @@ class Header extends React.Component {
         {Auth.isUserAuthenticated() == true ? (
 
             <div className="top-bar-left">
-                Welcome back {JSON.parse(localStorage.getItem('usrname')).name}!
+
+                  {this.state.userWelcomeText} {JSON.parse(localStorage.getItem('usrname')).name}!
+
             </div>  
             ):
             (
@@ -55,12 +107,25 @@ class Header extends React.Component {
 
             )}
 
-        </div>    
+        </div>
+
+        <div className="top-bar-left">
+            {/* <button onClick={this.onLanguageSettingClicked}> */}
+              <Link to="/" onClick={this.onLanguageSettingClicked}>{this.state.LangBtnText}</Link>   
+
+              {/* {this.state.LangBtnText} */}
+            {/* </button> */}
+        </div>  
+
+        {/* <div className="top-bar-left" onClick={this.onLanguageSettingClicked}>
+            中文版
+        </div>       */}
+
 
         {Auth.isUserAuthenticated() == false ? (
         <div className="top-bar-right">
-                 <Link to="/login">Log in</Link> 
-                <Link to="/signup">Sign up</Link>   
+                 <Link to="/login">{this.state.loginText}</Link> 
+                <Link to="/signup">{this.state.singupText}</Link>   
         </div>
         ):
         (
@@ -72,7 +137,12 @@ class Header extends React.Component {
 
 
 
-    </div>    
+    </div>
+    
+
+
+
+
     );
   }
 
